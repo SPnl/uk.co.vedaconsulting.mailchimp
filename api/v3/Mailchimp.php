@@ -123,12 +123,15 @@ function civicrm_api3_mailchimp_pullsync($params) {
   if ($runner) {
     $result = $runner->runAll();
   }
+  else {
+    return civicrm_api3_create_error(ts('Call to CRM_Mailchimp_Form_Pull::getRunner failed'), $params);
+  }
 
   if ($result['is_error'] == 0) {
     return civicrm_api3_create_success();
   }
   else {
-    return civicrm_api3_create_error();
+    return civicrm_api3_create_error('call to $runner->runAll() returned an error. The error message = ' . $result['error_message'], $params);
   }
 }
 
